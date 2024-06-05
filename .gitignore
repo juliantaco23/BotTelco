@@ -1,0 +1,4 @@
+bottelcoenv/
+.env
+__pycache__/
+*.pyc
