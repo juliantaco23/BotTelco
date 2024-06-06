@@ -1,3 +1,12 @@
+class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+        self.purchases = []
+
+    def add_purchase(self, date, product, price):
+        self.purchases.append({"date": date, "product": product, "price": price})
+
 class UserContext:
     def __init__(self, user_id):
         self.user_id = user_id
@@ -8,12 +17,3 @@ class UserContext:
 
     def get_history(self):
         return self.conversation_history
-    
-class User:
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-        self.purchases = []
-
-    def add_purchase(self, date, product, price):
-        self.purchases.append({"date": date, "product": product, "price": price})

@@ -74,15 +74,19 @@ class ChatService:
     def __init__(self):
         self.knowledge_service = KnowledgeService()
         self.store = {}
-        self.load_store_data('data/store_data.csv')  # Cargar los datos del CSV al inicializar
-
-    def load_store_data(self, file_path):
-        self.knowledge_service.load_store_data(file_path)
 
     def get_session_history(self, session_id: str) -> ChatMessageHistory:
         if session_id not in self.store:
             self.store[session_id] = ChatMessageHistory()
+            self.add_initial_message(session_id)
         return self.store[session_id]
+
+    def add_initial_message(self, session_id: str):
+        initial_message = (
+            "Hello! I am your assistant. You can ask me anything about our products or your previous purchases. "
+            "To buy a product, simply type 'buy [product_name]'. For example: 'buy laptop'."
+        )
+        self.store[session_id].add_message({"role": "assistant", "content": initial_message})
 
     def get_response(self, message, session_id: str):
         chain = self.knowledge_service.get_qa_chain()
@@ -104,9 +108,61 @@ class ChatService:
     
 class UserService:
     def __init__(self):
-        self.users = {}
+        self.users = self.load_users()
+        self.purchases = self.load_purchases()
 
-    def get_user_context(self, user_id):
-        if user_id not in self.users:
-            self.users[user_id] = ChatMessageHistory()
-        return self.users[user_id]
+    def load_users(self):
+        users = {}
+        try:
+            with open('data/users.csv', mode='r') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    if 'username' in row and 'password' in row:
+                        user = User(row['username'], row['password'])
+                        users[user.username] = user
+                    else:
+                        print(f"Invalid row in users.csv: {row}")
+            print(f'Loaded users: {users}')
+        except FileNotFoundError:
+            print("users.csv not found.")
+        except Exception as e:
+            print(f"Error loading users: {e}")
+        return users
+
+
+    def load_purchases(self):
+        with open('data/purchases.csv', mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                user = self.users.get(row['username'])
+                if user:
+                    user.add_purchase(row['date'], row['product'], row['price'])
+
+    def save_user(self, user):
+        with open('data/users.csv', mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=['username', 'password'])
+            writer.writerow({'username': user.username, 'password': user.password})
+
+    def save_purchase(self, username, purchase):
+        with open('data/purchases.csv', mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=['username', 'date', 'product', 'price'])
+            writer.writerow({'username': username, 'date': purchase['date'], 'product': purchase['product'], 'price': purchase['price']})
+
+    def register_user(self, username, password):
+        if username in self.users:
+            return False, "Username already exists"
+        user = User(username, password)
+        self.users[username] = user
+        self.save_user(user)
+        return True, "User registered successfully"
+
+    def authenticate_user(self, username, password):
+        user = self.users.get(username)
+        if user and user.password == password:
+            return True, "Login successful"
+        return False, "Invalid username or password"
+
+    def get_user_context(self, username):
+        if username not in self.users:
+            return None
+        return self.users[username]

@@ -1,3 +1,3 @@
-Product,Price,Description
-Smartphone,$699,A high-end smartphone with a 6.5-inch display and 128GB storage.
-Laptop,$999,A powerful laptop with 16GB RAM and 512GB SSD.
+Product,Price,Description,Stock
+Smartphone,$699,A high-end smartphone with a 6.5-inch display and 128GB storage.,50
+Laptop,$999,A powerful laptop with 16GB RAM and 512GB SSD.,20
