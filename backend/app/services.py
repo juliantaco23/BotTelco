@@ -9,6 +9,9 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 from dotenv import load_dotenv
+import csv as csv
+from datetime import datetime
+from app.models import User
 
 load_dotenv()
 
@@ -16,6 +19,7 @@ class KnowledgeService:
     def __init__(self):
         self.llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
         self.vectorstore = None
+        self.load_store_data('data/store_data.csv')
 
     def load_store_data(self, file_path):
         loader = CSVLoader(file_path=file_path)
@@ -97,7 +101,7 @@ class ChatService:
         response = result["answer"]
         history.add_message({"role": "assistant", "content": response})
         return response
-
+    
 class UserService:
     def __init__(self):
         self.users = {}
