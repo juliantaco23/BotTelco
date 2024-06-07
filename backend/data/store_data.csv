@@ -1,3 +1,11 @@
-Product,Price,Description,Stock
-Smartphone,$699,A high-end smartphone with a 6.5-inch display and 128GB storage.,50
-Laptop,$999,A powerful laptop with 16GB RAM and 512GB SSD.,20
+product,price,stock,description
+Laptop,1000,15,"15.6 inch display, Intel i7, 16GB RAM, 512GB SSD"
+Smartphone,700,30,"6.5 inch display, 128GB storage, 6GB RAM, Dual SIM"
+Tablet,400,20,"10 inch display, 64GB storage, 4GB RAM, WiFi only"
+Headphones,150,50,"Over-ear, Noise-cancelling, Bluetooth, 20 hours battery life"
+Smartwatch,250,25,"1.5 inch display, GPS, Heart Rate Monitor, Water-resistant"
+Monitor,300,10,"27 inch display, 4K resolution, HDMI and DisplayPort"
+Keyboard,80,40,"Mechanical, RGB lighting, USB connection"
+Mouse,50,45,"Wireless, Ergonomic design, 16000 DPI"
+External Hard Drive,120,35,"1TB storage, USB 3.0, Portable"
+Printer,200,4,"All-in-one, Wireless, Duplex printing, 30 ppm"
