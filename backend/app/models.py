@@ -4,10 +4,6 @@ class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.purchases = []
-
-    def add_purchase(self, date, product, price):
-        self.purchases.append({"date": date, "product": product, "price": price})
 
 class Purchase:
     def __init__(self, username, date, product, price):

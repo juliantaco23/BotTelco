@@ -14,11 +14,12 @@ class PurchaseService:
             with open('data/purchases.csv', mode='r') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
-                    if 'username' in row and 'date' in row and 'product' in row and 'price' in row:
+                    if all(key in row for key in ['username', 'date', 'product', 'price']):
                         purchase = Purchase(row['username'], row['date'], row['product'], row['price'])
                         purchases.append(purchase)
             return purchases
         except FileNotFoundError:
+            print("purchases.csv not found.")
             return purchases
         except Exception as e:
             print(f"Error loading purchases: {e}")
@@ -33,4 +34,7 @@ class PurchaseService:
         purchase = Purchase(username, datetime.now().strftime("%Y-%m-%d"), product_name, price)
         self.purchases.append(purchase)
         self.save_purchase(purchase)
-        return f"Purchase of {product_name} for {price} has been successfully recorded. You can pay using this link: http://example.com/pay"
+        return f"Purchase of {product_name} for {price} has been successfully recorded."
+
+    def get_purchases_by_user(self, username):
+        return [purchase.__dict__ for purchase in self.purchases if purchase.username == username]

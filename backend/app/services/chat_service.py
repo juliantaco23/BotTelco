@@ -2,11 +2,10 @@
 
 from app.services.user_service import UserService
 from app.services.product_service import ProductService
-from app.services.knowledge_service import KnowledgeService
 from app.services.purchase_service import PurchaseService
+from app.services.knowledge_service import KnowledgeService
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from datetime import datetime
 
 class ChatService:
     def __init__(self):
@@ -66,11 +65,6 @@ class ChatService:
             return f"Sorry, {product_name} is out of stock."
 
         self.product_service.update_product_stock(actual_product_name, 1)
-
         purchase_message = self.purchase_service.add_purchase(username, actual_product_name, product.price)
 
-        user = self.user_service.get_user(username)
-        if user:
-            user.add_purchase(datetime.now().strftime("%Y-%m-%d"), actual_product_name, product.price)
-        
         return purchase_message
