@@ -1,0 +1,47 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push frontend
+      run: |
+        docker build -t juliantaco/bottelco-frontend:latest ./frontend
+        docker push juliantaco/bottelco-frontend:latest
+
+    - name: Build and push backend
+      run: |
+        docker build -t juliantaco/bottelco-backend:latest ./backend
+        docker push juliantaco/bottelco-backend:latest
+
+    - name: Deploy to Azure Frontend
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: BotTelcoStore
+        slot-name: production
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_FRONTEND }}
+
+    - name: Deploy to Azure Backend
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: BotTelcoStoreBack
+        slot-name: production
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_BACKEND }}
