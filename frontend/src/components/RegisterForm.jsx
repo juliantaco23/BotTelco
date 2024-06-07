@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles.css';  // Asegúrate de que esta ruta sea correcta según la estructura de tu proyecto
 
 const RegisterForm = () => {
   const [username, setUsername] = useState('');
@@ -29,18 +30,20 @@ const RegisterForm = () => {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username:</label>
-        <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+    <div className="register-container">
+      <div className="register-box">
+        <h2>Register</h2>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="username">Username:</label>
+          <input type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
 
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-        <button type="submit">Register</button>
-      </form>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+          <button type="submit">Register</button>
+        </form>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+      </div>
     </div>
   );
 };

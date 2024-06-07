@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../styles.css';  // Asegúrate de que esta ruta sea correcta según la estructura de tu proyecto
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -29,22 +30,24 @@ const Chat = () => {
   };
 
   return (
-    <div>
+    <div className="chat-container">
       <h2>Chat</h2>
       <div className="chat-window">
         {messages.map((msg, index) => (
-          <div key={index} className={msg.sender}>
-            <span>{msg.sender}: </span>{msg.content}
+          <div key={index} className={`message ${msg.sender}`}>
+            <p>{msg.content}</p>
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type a message"
-      />
-      <button onClick={handleSendMessage}>Send</button>
+      <div className="input-container">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type a message"
+        />
+        <button onClick={handleSendMessage}>Send</button>
+      </div>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
