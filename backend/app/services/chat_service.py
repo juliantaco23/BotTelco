@@ -52,7 +52,7 @@ class ChatService:
         return response
 
     def handle_purchase(self, product_name, session_id: str):
-        username = session_id  # Assuming session_id is the username
+        username = session_id 
         normalized_product_name = product_name.strip().lower()
         normalized_products = {key.lower(): key for key in self.product_service.products.keys()}
 
