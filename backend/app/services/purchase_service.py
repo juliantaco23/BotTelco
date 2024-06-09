@@ -34,7 +34,7 @@ class PurchaseService:
         purchase = Purchase(username, datetime.now().strftime("%Y-%m-%d"), product_name, price)
         self.purchases.append(purchase)
         self.save_purchase(purchase)
-        return f"Purchase of {product_name} for {price} has been successfully recorded."
+        return f"Purchase of {product_name} for {price} has been successfully recorded. You can pay in https://link.pay"
 
     def get_purchases_by_user(self, username):
         return [purchase.__dict__ for purchase in self.purchases if purchase.username == username]
